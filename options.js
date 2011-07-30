@@ -1,40 +1,35 @@
 (function() {
-	var elem_ids = ['device_desktop_button'],
+	var elem_ids = ['device_default_button', 'current_ua'],
 		elems = {},
 		defaults = {
-			device: 'desktop'
+			device: 'default'
 		},
 		deviceList = [],
 		deviceListStr,
 		devices = {
 			iphone3g: {
 				name: 'Apple iPhone 3G',
-				ua: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 2_0 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.1 Mobile/5A347 Safari/525.20',
-				resolution: [480, 320]
+				ua: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 2_0 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.1 Mobile/5A347 Safari/525.20'
 			},
 			iphone4: {
 				name: 'Apple iPhone 4',
-				ua: 'Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7',
-				resolution: [960, 640]
+				ua: 'Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7'
 			},
 			ipad: {
 				name: 'Apple iPad',
-				ua: 'Mozilla/5.0 (iPad; U; CPU OS 3_2_1 like Mac OS X; es-es) AppleWebKit/531.21.10 (KHTML, like Gecko) Mobile/7B405',
-				resolution: [1024,768]
+				ua: 'Mozilla/5.0 (iPad; U; CPU OS 3_2_1 like Mac OS X; es-es) AppleWebKit/531.21.10 (KHTML, like Gecko) Mobile/7B405'
 			},
 			incredible: {
 				name: 'HTC Droid Incredible',
-				ua: 'Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; ADR6300 Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17',
-				resolution: [800, 480]
+				ua: 'Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; ADR6300 Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17'
 			},
 			palmpre: {
 				name: 'Palm Pre',
-				ua: 'Mozilla/5.0 (webOS/1.0; U; en-US) AppleWebKit/525.27.1 (KHTML, like Gecko) Version/1.0 Safari/525.27.1 Pre/1.0',
-				resolution: [480, 320]
+				ua: 'Mozilla/5.0 (webOS/1.0; U; en-US) AppleWebKit/525.27.1 (KHTML, like Gecko) Version/1.0 Safari/525.27.1 Pre/1.0'
 			}
 		},
 		deviceListener = function(event) {
-			var regexp = new RegExp('(' +deviceListStr+ '|desktop)', 'i'),
+			var regexp = new RegExp('(' +deviceListStr+ '|default)', 'i'),
 				device = event.target.id.match(regexp);
 			if( !device ) {
 				return;
@@ -44,6 +39,7 @@
 			// Careful setting the localStorage value to prevent setting it with the string 'undefined'
 			if( devices[device] ) {
 				localStorage['user-agent'] = devices[device].ua;
+				elems.current_ua.value = devices[device].ua;
 			} else {
 				delete localStorage['user-agent'];
 			}
@@ -51,6 +47,7 @@
 		initForm = function() {
 			if( localStorage['device'] ) {
 				elems['device_' + localStorage['device'] + '_button'].setAttribute('checked', true);
+				elems.current_ua.value = devices[localStorage['device']].ua;
 			}
 		};
 
@@ -94,6 +91,6 @@
 		}
 		
 		initForm();
-		elems.device_desktop_button.addEventListener('click', deviceListener);
+		elems.device_default_button.addEventListener('click', deviceListener);
 	});
 })();

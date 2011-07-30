@@ -3,7 +3,7 @@
 	font-family:Arial,sans-serif;
 }
 #control_panel h1 {
-	color:#ffffff;
+	color:#eeeeee;
 	font-weight:bold;
 } div.control  {
 	margin-bottom:12px;
@@ -32,6 +32,8 @@
 	padding:2px;
 } #control_panel input::selection {
 	background:#ffffff;
+} #control_panel textarea {
+	background:inherit;
 } #control_panel label {
 	cursor:pointer;
 	display:inline;
