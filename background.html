@@ -1,0 +1,30 @@
+<html>
+<script src="jquery.js"></script>
+<script>
+chrome.experimental.webRequest.onBeforeSendHeaders.addListener(function(details) {
+	var headers = details.requestHeaders;
+	if( !localStorage['user-agent'] ) {
+		return;
+	}
+	for(var i = 0, l = headers.length; i < l; ++i) {
+		if( headers[i].name == 'User-Agent' ) {
+			break;
+		}
+	}
+	if(i < headers.length) {
+		headers[i].value = localStorage['user-agent'];
+	}
+	return {requestHeaders: headers};
+}, undefined, ['requestHeaders','blocking']);
+
+chrome.browserAction.onClicked.addListener(function(tab) {
+	if( localStorage['active'] === 'true' ) {
+		localStorage['active'] = false;
+	} else {
+		localStorage['active'] = true;
+		chrome.tabs.executeScript(tab.id, {file: "loader.js"});
+	}
+	
+});
+</script>
+</html>

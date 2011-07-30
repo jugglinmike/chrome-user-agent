@@ -1,0 +1,38 @@
+#control_panel {
+	background-color:#0099cc;
+	font-family:Arial,sans-serif;
+}
+#control_panel h1 {
+	color:#ffffff;
+	font-weight:bold;
+} div.control  {
+	margin-bottom:12px;
+} div.control h2 {
+	display:block;
+	font-size:10pt;
+	font-weight:bold;
+	margin:0px 0px 3px 0px;
+	padding:0px;
+} #control_panel ul {
+	display:block;
+	list-style-type:none;
+	margin:0px;
+	padding:0px;
+} #control_panel li {
+	display:inline;
+	margin:0px 4px 0px 0px;
+	padding:0px;
+	white-space:nowrap;
+} #control_panel input {
+	margin:0px 4px 0px 0px;
+	padding:0px;
+} #control_panel input[type=text] {
+	background-color:#0099cc;
+	border:1px solid #ffffff;
+	padding:2px;
+} #control_panel input::selection {
+	background:#ffffff;
+} #control_panel label {
+	cursor:pointer;
+	display:inline;
+}
