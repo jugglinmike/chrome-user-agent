@@ -1,5 +1,6 @@
 (function() {
 	var elem_ids = ['device_default_button', 'device_list', 'current_ua_field',
+		'current_ua_field',
 		'add_device_button', 'restore_defaults_button'],
 		elems = {},
 		deviceListStr,
@@ -56,6 +57,12 @@
 		},
 		listeners = {
 			deviceLabelClick: function( event ) {
+				var now = new Date().getTime();
+				if( !this.lastClicked || now - this.lastClicked > 1000 ) {
+					this.lastClicked = now;
+					return;
+				}
+				this.lastClicked = 0;
 				var deviceID = event.target.getAttribute('for').match(/device_(.+)_button/i)[1],
 					deviceName = event.target.innerHTML,
 					textField = dom.createTextField(deviceID, deviceName);
@@ -74,8 +81,14 @@
 				
 				if( oldDeviceID && newDeviceID ) {
 					// Replace text field with label
-					var label = dom.createLabel(newDeviceID, deviceName);
-					event.target.parentNode.replaceChild(label, event.target);
+					var li = document.createElement('li'),
+						radio = dom.createRadioButton(newDeviceID),
+						label = dom.createLabel(newDeviceID, deviceName);
+					li.setAttribute('id', 'device_' +newDeviceID+ '_li');
+					li.appendChild(radio);
+					li.appendChild(label);
+					
+					event.target.parentNode.parentNode.replaceChild(li, event.target.parentNode);
 					devices[newDeviceID] = devices[oldDeviceID];
 					devices[newDeviceID].name = deviceName;
 					if( oldDeviceID !== newDeviceID ) {
@@ -134,6 +147,20 @@
 				}
 				deviceStr = '';
 				loadDevices();
+				document.getElementById('device_default_button').click();
+			},
+			textAreaType: function(event) {
+				var activeDeviceID = 'default';
+				for( var deviceID in devices ) {
+					if( devices.hasOwnProperty(deviceID) ) {
+						if(document.getElementById('device_' +deviceID+ '_button').checked) {
+							activeDeviceID = deviceID;
+							break;
+						}
+					}
+				}
+				devices[activeDeviceID].ua = localStorage['user-agent'] = event.target.value;
+				localStorage['devices'] = JSON.stringify(devices);
 			}
 		},
 		addDeviceElement = function( deviceID, deviceName ) {
@@ -188,5 +215,6 @@
 		
 		elems.add_device_button.addEventListener('click', listeners.addDeviceButtonClick);
 		elems.restore_defaults_button.addEventListener('click', listeners.restoreDefaultsButtonClick);
+		elems.current_ua_field.addEventListener('keyup', listeners.textAreaType);
 	});
 })();
