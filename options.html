@@ -1,6 +1,7 @@
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="style.css" />
+<script src="json2.js"></script>
 <script src="options.js"></script>
 </head>
 <body id="control_panel">
@@ -8,11 +9,12 @@
 <form>
 	<div class="control">
 		<h2>Current User-Agent</h2>
-		<textarea id="current_ua"></textarea>
+		<textarea id="current_ua_field"></textarea>
 		<h2>Device</h2>
 		<ul id="device_list">
-			<li><input type="radio" id="device_default_button" name="device" value="default"><label for="device_default_button">Default</label></li>
 		</ul>
+		<input type="button" id="add_device_button" value="Add a Device">
+		<input type="button" id="restore_defaults_button" value="Restore Defaults">
 	</div>
 </form>
 </body>

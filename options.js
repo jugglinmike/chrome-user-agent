@@ -1,96 +1,192 @@
 (function() {
-	var elem_ids = ['device_default_button', 'current_ua'],
+	var elem_ids = ['device_default_button', 'device_list', 'current_ua_field',
+		'add_device_button', 'restore_defaults_button'],
 		elems = {},
-		defaults = {
-			device: 'default'
-		},
-		deviceList = [],
 		deviceListStr,
-		devices = {
-			iphone3g: {
+		defaultDevices = {
+			apple_iphone_3g: {
 				name: 'Apple iPhone 3G',
 				ua: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 2_0 like Mac OS X; en-us) AppleWebKit/525.18.1 (KHTML, like Gecko) Version/3.1.1 Mobile/5A347 Safari/525.20'
 			},
-			iphone4: {
+			apple_iphone_4: {
 				name: 'Apple iPhone 4',
 				ua: 'Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7'
 			},
-			ipad: {
+			apple_ipad: {
 				name: 'Apple iPad',
 				ua: 'Mozilla/5.0 (iPad; U; CPU OS 3_2_1 like Mac OS X; es-es) AppleWebKit/531.21.10 (KHTML, like Gecko) Mobile/7B405'
 			},
-			incredible: {
+			htc_droid_incredible: {
 				name: 'HTC Droid Incredible',
 				ua: 'Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; ADR6300 Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17'
 			},
-			palmpre: {
+			palm_pre: {
 				name: 'Palm Pre',
 				ua: 'Mozilla/5.0 (webOS/1.0; U; en-US) AppleWebKit/525.27.1 (KHTML, like Gecko) Version/1.0 Safari/525.27.1 Pre/1.0'
 			}
 		},
-		deviceListener = function(event) {
-			var regexp = new RegExp('(' +deviceListStr+ '|default)', 'i'),
-				device = event.target.id.match(regexp);
-			if( !device ) {
-				return;
-			}
-			device = device[0];
-			localStorage['device'] = device;
-			// Careful setting the localStorage value to prevent setting it with the string 'undefined'
-			if( devices[device] ) {
-				localStorage['user-agent'] = devices[device].ua;
-				elems.current_ua.value = devices[device].ua;
-			} else {
-				delete localStorage['user-agent'];
-			}
-		},
-		initForm = function() {
-			if( localStorage['device'] ) {
-				elems['device_' + localStorage['device'] + '_button'].setAttribute('checked', true);
-				elems.current_ua.value = devices[localStorage['device']].ua;
-			}
-		};
-
-	document.addEventListener("DOMContentLoaded", function() {
-		var deviceListElement = document.getElementById('device_list');
-		for( var device in devices ) {
-			if( devices.hasOwnProperty(device) ) {
-				deviceList.push(device);
-				var listItem = document.createElement('li'),
-					radioButton = document.createElement('input'),
-					label = document.createElement('label');
-				
+		devices = (localStorage['devices']) ? JSON.parse(localStorage['devices']) : defaultDevices,
+		dom = {
+			createLabel: function( deviceID, deviceName ) {
+				var label = document.createElement('label');
+				label.setAttribute('for', 'device_' +deviceID+ '_button');
+				label.setAttribute('class', 'inline');
+				label.innerHTML = deviceName;
+				label.addEventListener('click', listeners.deviceLabelClick);
+				return label;
+			},
+			createRadioButton: function( deviceID ) {
+				var radioButton = document.createElement('input');
 				radioButton.setAttribute('type', 'radio');
 				radioButton.setAttribute('name', 'device');
-				radioButton.setAttribute('id', 'device_' +device+ '_button');
-				radioButton.setAttribute('value', device);
-				radioButton.addEventListener('click', deviceListener);
-				
-				label.setAttribute('for', 'device_' +device+ '_button');
-				label.setAttribute('class', 'inline');
-				label.innerHTML = devices[device].name;
-				
-				listItem.appendChild(radioButton);
-				listItem.appendChild(label);
-				deviceListElement.appendChild(listItem);
-				deviceListElement.appendChild(document.createTextNode(' '));
-				elems['device_' +device+ '_button'] = radioButton;
+				radioButton.setAttribute('id', 'device_' +deviceID+ '_button');
+				radioButton.setAttribute('value', deviceID);
+				radioButton.addEventListener('click', listeners.deviceButtonClick);
+				return radioButton;
+			},
+			createTextField: function( deviceID, deviceName ) {
+				var textField = document.createElement('input'),
+					elementID = deviceID ? 'device_'+deviceID+'_textfield' : 'new_field';
+				textField.setAttribute('type', 'text');
+				textField.setAttribute('value', deviceName || '');
+				textField.setAttribute('id', elementID);
+				textField.addEventListener('blur', listeners.nameBlur);
+				return textField;
 			}
-		}
-		deviceListStr = deviceList.join('|');
+		},
+		listeners = {
+			deviceLabelClick: function( event ) {
+				var deviceID = event.target.getAttribute('for').match(/device_(.+)_button/i)[1],
+					deviceName = event.target.innerHTML,
+					textField = dom.createTextField(deviceID, deviceName);
+				event.target.parentNode.replaceChild(textField, event.target);
+				textField.focus();
+			},
+			nameBlur: function( event ) {
+				var oldDeviceID,
+					newDeviceID,
+					deviceName = event.target.value;
+					
+				newDeviceID = deviceName.replace(/ /gi, '_').toLowerCase();
+				oldDeviceID = event.target.id.match(/device_(.+)_textfield/i);
+				oldDeviceID = oldDeviceID && oldDeviceID[1];
+				
+				
+				if( oldDeviceID && newDeviceID ) {
+					// Replace text field with label
+					var label = dom.createLabel(newDeviceID, deviceName);
+					event.target.parentNode.replaceChild(label, event.target);
+					devices[newDeviceID] = devices[oldDeviceID];
+					devices[newDeviceID].name = deviceName;
+					if( oldDeviceID !== newDeviceID ) {
+						delete devices[oldDeviceID];
+					}
+					localStorage['devices'] = JSON.stringify(devices);
+				} else {
+					// Delete oldDeviceID's list element
+					deleteDevice(oldDeviceID);
+					if( newDeviceID ) {
+						// Insert new element
+						while( devices[newDeviceID] ) {
+							newDeviceID += '-';
+						}
+						devices[newDeviceID] = {
+							name: deviceName,
+							ua: current_ua_field.value
+						};
+						addDeviceElement(newDeviceID, deviceName);
+						localStorage['devices'] = JSON.stringify(devices);
+					}
+				}
+			},
+			deviceButtonClick: function(event) {
+				var regexp = new RegExp('(default' + (deviceListStr ? '|'+deviceListStr : '') + ')', 'i'),
+					deviceID = event.target.id.match(regexp);
+				deviceID = deviceID && deviceID[1];
+				if( !deviceID ) {
+					return;
+				}
+				localStorage['deviceID'] = deviceID;
+				// Careful setting the localStorage value to prevent setting it with the string 'undefined'
+				if( devices[deviceID] ) {
+					localStorage['user-agent'] = elems.current_ua_field.value = devices[deviceID].ua;
+				} else {
+					delete localStorage['user-agent'];
+					elems.current_ua_field.value = '';
+				}
+			},
+			addDeviceButtonClick: function(event) {
+				var listelement = document.createElement('li'),
+					textField = dom.createTextField();
+				
+				listelement.appendChild(textField);
+				listelement.setAttribute('id', 'new_device');
+				elems['device_list'].appendChild(listelement);
+				elems['device_list'].appendChild(document.createTextNode(' '));
+				textField.focus();
+			},
+			restoreDefaultsButtonClick: function(event) {
+				var li;
+				devices = defaultDevices;
+				delete localStorage['devices'];
+				while( li = elems.device_list.firstChild ) {
+					elems.device_list.removeChild(li);
+				}
+				deviceStr = '';
+				loadDevices();
+			}
+		},
+		addDeviceElement = function( deviceID, deviceName ) {
+			if( deviceListStr ) {
+				deviceListStr += '|';
+			}
+			deviceListStr += deviceID;
+			var listItem = document.createElement('li'),
+				radioButton = dom.createRadioButton(deviceID);
+				label = dom.createLabel(deviceID, deviceName);
+			
+			listItem.appendChild(radioButton);
+			listItem.appendChild(label);
+			listItem.setAttribute('id', 'device_' +deviceID+ '_li');
+			elems['device_list'].appendChild(listItem);
+			elems['device_list'].appendChild(document.createTextNode(' '));
+		},
+		deleteDevice = function( deviceID ) {
+			var listElementID = deviceID ? 'device_' +deviceID+ '_li' : 'new_device';
+				listElement = document.getElementById(listElementID);
+			elems['device_list'].removeChild(listElement);
+			delete devices[deviceID];
+			deviceListStr = deviceListStr.replace(deviceID, '');
+			localStorage['devices'] = JSON.stringify(devices);
+		},
+		loadDevices = function() {
+			// Add the devices, ensuring that "default" is at the top of the list
+			addDeviceElement('default', 'Default');
+			for( var deviceID in devices ) {
+				if( devices.hasOwnProperty(deviceID) && deviceID !== 'default' ) {
+					addDeviceElement(deviceID, devices[deviceID].name);
+				}
+			}
+			devices['default'] = {'name':'Default', 'ua':''};
+			
+			localStorage['deviceID'] = (localStorage['deviceID'] && devices[localStorage['deviceID']]) ? localStorage['deviceID'] : 'default';
+		},
+		initForm = function() {
+			if( localStorage['deviceID'] ) {
+				document.getElementById('device_' + localStorage['deviceID'] + '_button').setAttribute('checked', true);
+				elems.current_ua_field.value = (devices[localStorage['deviceID']]) ? devices[localStorage['deviceID']].ua : '';
+			}
+		};
+	document.addEventListener("DOMContentLoaded", function() {
 		// Grab the DOM elements that need event handlers attached
 		elem_ids.forEach(function( element_id ) {
 			elems[element_id] = document.getElementById(element_id);
 		});
 		
-		// Make sure all local storage values are set
-		for( var param in defaults ) {
-			if( defaults.hasOwnProperty(param) ) {
-				localStorage[param] = localStorage[param] || defaults[param];
-			}
-		}
-		
+		loadDevices();
 		initForm();
-		elems.device_default_button.addEventListener('click', deviceListener);
+		
+		elems.add_device_button.addEventListener('click', listeners.addDeviceButtonClick);
+		elems.restore_defaults_button.addEventListener('click', listeners.restoreDefaultsButtonClick);
 	});
 })();
