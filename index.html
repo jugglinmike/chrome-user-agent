@@ -1,1 +1,41 @@
-My GitHub Page
+<html>
+<head>
+	<title>Chrome User-Agent Modifier</title>
+	<link rel="stylesheet" type="text/css" href="reset.css" />
+	<link href='http://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+<body>
+<div id="container">
+	<header>
+		<h1>Chrome User-Agent Modifier</h1>
+		<h2>An extension to spoof your User-Agent string in Google Chrome.</h2>
+	</header>
+	<nav>
+		<ul>
+			<li><a href="https://raw.github.com/jugglinmike/chrome-user-agent/master/chrome-user-agent.crx">Download the Latest Version</a></li>
+			<li><a href="#installing">Installation Instructions</a></li>
+			<li><a href="#running">How to Run</a></li>
+		</ul>
+	</nav>
+	<div id="body">
+		<article>
+			<section id="installing">
+				<h1>Installation Instructions</h1>
+				<p><strong>Download the Extension.</strong> You can get the latest version of the <a href="https://raw.github.com/jugglinmike/chrome-user-agent/master/chrome-user-agent.crx">extension here</a> (of course, you'll need <a href="http://www.google.com/chrome">Google Chrome</a> installed first).</p>
+				<p><strong>Enable the Experimental Extension API.</strong> Open up Chrome and navigate to <a href="chrome://flags">chrome://flags</a>. Scroll down to "Experimental Extension APIs" and click "Enable".</p>
+				<p><strong>Install the Application.</strong> Drag the extension file (it is named 'chrome-ua-modifier.crx' by default) into a Chrome browser window.</p>
+			</section>
+			<section id="running">
+				<h1>How to Run</h1>
+				<p><strong>Changing Your User-Agent.</strong> The extension options can be accessed either by selecting "Options" under the extension's entry on <a href="chrome://extensions">chrome://extensions</a> or clicking on the extension's logo (<img src="icon16.png" />) next to Chrome's omnibox. Select any entry from the device list, and all future HTTP requests will be sent with the user-agent string displayed in the text area. Select "default" to use your default user-agent string.</p>
+				<p><strong>Adding/Modifying "Devices".</strong> Click "Add a Device" to create a new device--be sure to type a device name in the text area that appears. (You can double-click any device to change its name.) If you want to change the User-Agent string associated with any device, select it from the list and modify the text in the "Current User-Agent" text area. (I have found <a href="http://www.zytrax.com/tech/web/browser_ids.htm">this page</a> on <a href="http://www.zytrax.com/">zytrax.com</a> to be a great resource for valid user-agent strings.)</p>
+				<p><strong>Deletine "Devices".</strong> If you no longer need a saved device, simply double-click on its entry in the list and clear the text area.</p>
+			</section>
+		</article>
+	</div>
+	<footer>
+	</footer>
+</div>
+</body>
+</html>
