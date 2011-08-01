@@ -1,6 +1,6 @@
 (function() {
 	var elem_ids = ['device_default_button', 'device_list', 'current_ua_field',
-		'current_ua_field',
+		'url_filters_field', 'current_ua_field',
 		'add_device_button', 'restore_defaults_button'],
 		elems = {},
 		deviceListStr,
@@ -202,6 +202,9 @@
 				document.getElementById('device_' + localStorage['deviceID'] + '_button').setAttribute('checked', true);
 				elems.current_ua_field.value = (devices[localStorage['deviceID']]) ? devices[localStorage['deviceID']].ua : '';
 			}
+			if( localStorage['urlFilters'] ) {
+				elems.url_filters_field.value = JSON.parse(localStorage['urlFilters']).join("\n");;
+			}
 		};
 	document.addEventListener("DOMContentLoaded", function() {
 		// Grab the DOM elements that need event handlers attached
@@ -215,5 +218,10 @@
 		elems.add_device_button.addEventListener('click', listeners.addDeviceButtonClick);
 		elems.restore_defaults_button.addEventListener('click', listeners.restoreDefaultsButtonClick);
 		elems.current_ua_field.addEventListener('keyup', listeners.textAreaType);
+		
+		elems.url_filters_field.addEventListener('keyup', function(event) {
+			localStorage['urlFilters'] = JSON.stringify(event.target.value.split("\n"));
+			chrome.extension.sendRequest('resetListener');
+		});
 	});
 })();

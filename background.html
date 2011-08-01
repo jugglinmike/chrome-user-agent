@@ -1,19 +1,36 @@
 <html>
+<script src="json2.js"></script>
 <script>
-chrome.experimental.webRequest.onBeforeSendHeaders.addListener(function(details) {
-	var headers = details.requestHeaders;
-	if( !localStorage['user-agent'] ) {
-		return;
-	}
-	for(var i = 0, l = headers.length; i < l; ++i) {
-		if( headers[i].name == 'User-Agent' ) {
-			break;
+var sendHeadersListener = function(details) {
+		var headers = details.requestHeaders;
+		if( !localStorage['user-agent'] ) {
+			return;
+		}
+		for(var i = 0, l = headers.length; i < l; ++i) {
+			if( headers[i].name == 'User-Agent' ) {
+				break;
+			}
+		}
+		if(i < headers.length) {
+			headers[i].value = localStorage['user-agent'];
+		}
+		return {requestHeaders: headers};
+	},
+	setListener = function() {
+		chrome.experimental.webRequest.onBeforeSendHeaders.removeListener(sendHeadersListener);
+		chrome.experimental.webRequest.onBeforeSendHeaders.addListener(
+			sendHeadersListener,
+			{ urls: localStorage['urlFilters'] && JSON.parse(localStorage['urlFilters']) },
+			['requestHeaders','blocking']
+		);
+	};
+chrome.extension.onRequest.addListener(
+	function(request) {
+		if( request === 'resetListener') {
+			setListener();
 		}
 	}
-	if(i < headers.length) {
-		headers[i].value = localStorage['user-agent'];
-	}
-	return {requestHeaders: headers};
-}, undefined, ['requestHeaders','blocking']);
+);
+setListener();
 </script>
 </html>
