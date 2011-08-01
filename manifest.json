@@ -1,7 +1,7 @@
 {
 	"name": "Chrome User-Agent",
 	"version": "0.1.0",
-	"description": "Modifying your user-agent string",
+	"description": "Modify the user-agent string sent with HTTP requests. Go to the options page to select a new string or create your own. Double click on a saved antry to modify its name. To remove a custom entry, simply delete its name.",
 	"icons": {
 		"16": "icon16.png",
 		"48": "icon48.png",

@@ -31,7 +31,6 @@
 			createLabel: function( deviceID, deviceName ) {
 				var label = document.createElement('label');
 				label.setAttribute('for', 'device_' +deviceID+ '_button');
-				label.setAttribute('class', 'inline');
 				label.innerHTML = deviceName;
 				label.addEventListener('click', listeners.deviceLabelClick);
 				return label;

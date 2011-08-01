@@ -1,22 +1,21 @@
 #control_panel {
 	background-color:#0099cc;
 	font-family:Arial,sans-serif;
-}
-#control_panel h1 {
+	width:300px;
+} #control_panel h1 {
 	color:#eeeeee;
+	font-size:20pt;
 	font-weight:bold;
-} div.control  {
-	margin-bottom:12px;
-} div.control h2 {
+} #control_panel h2 {
 	display:block;
 	font-size:10pt;
 	font-weight:bold;
-	margin:0px 0px 3px 0px;
+	margin:8px 0px 3px 0px;
 	padding:0px;
 } #control_panel ul {
 	display:block;
 	list-style-type:none;
-	margin:0px;
+	margin:0px 0px 8px 0px;
 	padding:0px;
 } #control_panel li {
 	display:inline;
@@ -30,10 +29,19 @@
 	background-color:#0099cc;
 	border:1px solid #ffffff;
 	padding:2px;
+} #control_panel input[type=button] {
+	background-color:#0099cc;
+	border:solid 1px #eeeeee;
+	color:#eeeeee;
+	margin:3px;
+	padding:3px;
 } #control_panel input::selection {
 	background:#ffffff;
 } #control_panel textarea {
 	background:inherit;
+	border:solid 1px #eeeeee;
+	height:4em;
+	width:100%;
 } #control_panel label {
 	cursor:pointer;
 	display:inline;
