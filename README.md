@@ -8,8 +8,6 @@ Installation Instructions
 
 **Download the Extension.** You can get the latest version of the <a href="https://raw.github.com/jugglinmike/chrome-user-agent/master/chrome-user-agent.crx">extension here</a> (of course, you'll need <a href="http://www.google.com/chrome">Google Chrome</a> installed first).</p>
 
-**Enable the Experimental Extension API.** Open up Chrome and navigate to <a href="chrome://flags">chrome://flags</a>. Scroll down to "Experimental Extension APIs" and click "Enable".</p>
-
 **Install the Application.** Drag the extension file (it is named 'chrome-ua-modifier.crx' by default) into a Chrome browser window.</p>
 
 How to Run
