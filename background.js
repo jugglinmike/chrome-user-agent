@@ -1,4 +1,10 @@
-chrome.experimental.webRequest.onBeforeSendHeaders.addListener(function(details) {
+var requestFilter = {
+	urls: [
+		"<all_urls>"
+	]
+};
+
+chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
 	var headers = details.requestHeaders;
 	if( !localStorage['user-agent'] ) {
 		return;
@@ -12,4 +18,4 @@ chrome.experimental.webRequest.onBeforeSendHeaders.addListener(function(details)
 		headers[i].value = localStorage['user-agent'];
 	}
 	return {requestHeaders: headers};
-}, undefined, ['requestHeaders','blocking']);
+}, requestFilter, ['requestHeaders','blocking']);

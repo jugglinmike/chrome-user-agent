@@ -16,7 +16,9 @@
 		"popup": "options.html"
 	},
 	"permissions": [
-		"experimental",
+		"webRequest",
+		"webRequestBlocking",
+		"<all_urls>",
 		"tabs"
 	]
 }
