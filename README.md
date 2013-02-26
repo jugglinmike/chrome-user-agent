@@ -43,5 +43,5 @@ href="http://www.zytrax.com/tech/web/browser_ids.htm">this page</a> on <a
 href="http://www.zytrax.com/">zytrax.com</a> to be a great resource for valid
 user-agent strings.)
 
-**Deletine "Devices".** If you no longer need a saved device, simply
+**Deleting "Devices".** If you no longer need a saved device, simply
 double-click on its entry in the list and clear the text area.
