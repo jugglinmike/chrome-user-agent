@@ -21,10 +21,10 @@
 				name: 'Chrome for iOS',
 				ua: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 7_0_6 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) CriOS/33.0.1750.14 Mobile/11B651 Safari/9537.53'
 			},
-            chrome_ios_desktopversion: {
+			chrome_ios_desktopversion: {
 				name: 'Chrome for iOS (after Request Desktop Version)',
 				ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS 7_0_6) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/5.1.3 Safari/534.53.10'
-            }
+			}
 			apple_ipad: {
 				name: 'Apple iPad',
 				ua: 'Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53'
@@ -33,10 +33,10 @@
 				name: 'HTC Droid Incredible',
 				ua: 'Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; ADR6300 Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17'
 			},
-            moto_x: {
-                name: 'Moto X',
-                ua: 'Mozilla/5.0 (Linux; U; Android 4.2; en-us; XT1058 Build/13.9.0Q2.X-70-GHOST-ATT_LE-2) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'
-            }
+			moto_x: {
+				name: 'Moto X',
+				ua: 'Mozilla/5.0 (Linux; U; Android 4.2; en-us; XT1058 Build/13.9.0Q2.X-70-GHOST-ATT_LE-2) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'
+			}
 			palm_pre: {
 				name: 'Palm Pre',
 				ua: 'Mozilla/5.0 (webOS/1.0; U; en-US) AppleWebKit/525.27.1 (KHTML, like Gecko) Version/1.0 Safari/525.27.1 Pre/1.0'
