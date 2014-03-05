@@ -8,9 +8,11 @@
 		"48": "icon48.png",
 		"128": "icon128.png"
 	},
-	
+	"manifest_version": 2,
 	"options_page": "options.html",
-	"background_page": "background.html",
+	"background": {
+        "page": "background.html"
+    },
 	"browser_action": {
 		"default_icon": "icon19.png",
 		"popup": "options.html"
