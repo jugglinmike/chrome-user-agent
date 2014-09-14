@@ -13,13 +13,29 @@
 				name: 'Apple iPhone 4',
 				ua: 'Mozilla/5.0 (iPod; U; CPU iPhone OS 4_0 like Mac OS X; en-us) AppleWebKit/532.9 (KHTML, like Gecko) Version/4.0.5 Mobile/8A293 Safari/6531.22.7'
 			},
+			apple_iphone_5: {
+				name: 'Apple iPhone 5',
+				ua: 'Mozilla/5.0 (iPhone; CPU iPhone OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53'
+			},
+			chrome_ios: {
+				name: 'Chrome for iOS',
+				ua: 'Mozilla/5.0 (iPhone; U; CPU iPhone OS 7_0_6 like Mac OS X; en-us) AppleWebKit/537.51.1 (KHTML, like Gecko) CriOS/33.0.1750.14 Mobile/11B651 Safari/9537.53'
+			},
+			chrome_ios_desktopversion: {
+				name: 'Chrome for iOS (after Request Desktop Version)',
+				ua: 'Mozilla/5.0 (Macintosh; Intel Mac OS 7_0_6) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/5.1.3 Safari/534.53.10'
+			},
 			apple_ipad: {
 				name: 'Apple iPad',
-				ua: 'Mozilla/5.0 (iPad; U; CPU OS 3_2_1 like Mac OS X; es-es) AppleWebKit/531.21.10 (KHTML, like Gecko) Mobile/7B405'
+				ua: 'Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53'
 			},
 			htc_droid_incredible: {
 				name: 'HTC Droid Incredible',
 				ua: 'Mozilla/5.0 (Linux; U; Android 2.1-update1; en-us; ADR6300 Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17'
+			},
+			moto_x: {
+				name: 'Moto X',
+				ua: 'Mozilla/5.0 (Linux; U; Android 4.2; en-us; XT1058 Build/13.9.0Q2.X-70-GHOST-ATT_LE-2) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'
 			},
 			palm_pre: {
 				name: 'Palm Pre',
@@ -72,12 +88,12 @@
 				var oldDeviceID,
 					newDeviceID,
 					deviceName = event.target.value;
-					
+
 				newDeviceID = deviceName.replace(/ /gi, '_').toLowerCase();
 				oldDeviceID = event.target.id.match(/device_(.+)_textfield/i);
 				oldDeviceID = oldDeviceID && oldDeviceID[1];
-				
-				
+
+
 				if( oldDeviceID && newDeviceID ) {
 					// Replace text field with label
 					var li = document.createElement('li'),
@@ -86,7 +102,7 @@
 					li.setAttribute('id', 'device_' +newDeviceID+ '_li');
 					li.appendChild(radio);
 					li.appendChild(label);
-					
+
 					event.target.parentNode.parentNode.replaceChild(li, event.target.parentNode);
 					devices[newDeviceID] = devices[oldDeviceID];
 					devices[newDeviceID].name = deviceName;
@@ -130,7 +146,7 @@
 			addDeviceButtonClick: function(event) {
 				var listelement = document.createElement('li'),
 					textField = dom.createTextField();
-				
+
 				listelement.appendChild(textField);
 				listelement.setAttribute('id', 'new_device');
 				elems['device_list'].appendChild(listelement);
@@ -170,7 +186,7 @@
 			var listItem = document.createElement('li'),
 				radioButton = dom.createRadioButton(deviceID);
 				label = dom.createLabel(deviceID, deviceName);
-			
+
 			listItem.appendChild(radioButton);
 			listItem.appendChild(label);
 			listItem.setAttribute('id', 'device_' +deviceID+ '_li');
@@ -194,7 +210,7 @@
 				}
 			}
 			devices['default'] = {'name':'Default', 'ua':''};
-			
+
 			localStorage['deviceID'] = (localStorage['deviceID'] && devices[localStorage['deviceID']]) ? localStorage['deviceID'] : 'default';
 		},
 		initForm = function() {
@@ -208,10 +224,10 @@
 		elem_ids.forEach(function( element_id ) {
 			elems[element_id] = document.getElementById(element_id);
 		});
-		
+
 		loadDevices();
 		initForm();
-		
+
 		elems.add_device_button.addEventListener('click', listeners.addDeviceButtonClick);
 		elems.restore_defaults_button.addEventListener('click', listeners.restoreDefaultsButtonClick);
 		elems.current_ua_field.addEventListener('keyup', listeners.textAreaType);
