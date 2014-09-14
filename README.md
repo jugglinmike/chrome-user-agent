@@ -1,16 +1,18 @@
-Chrome User-Agent Modifier Extension
-====================================
+# This project has been deprecated.
 
-Allows you to re-set the "User-Agent" string in Chrome's HTTP request headers.
-
-*Note* Chrome 17 ships with support for modifying the User-Agent string.
-([Click here for the Chromium
+Starting with version 17, the Google Chrome browser ships with support for
+modifying the User-Agent string. ([Click here for the Chromium
 issue](http://code.google.com/p/chromium/issues/detail?id=67063) and [here for
 more info on the
 feature](http://techdows.com/2011/12/google-chrome-now-has-built-in-user-agent-switcher.html).)
 This renders the dedicated user-agent switching extension obsolete, but the
 approach outlined here may still be relevant in the context of a larger
 extension.
+
+Chrome User-Agent Modifier Extension
+====================================
+
+Allows you to re-set the "User-Agent" string in Chrome's HTTP request headers.
 
 Installation Instructions
 -------------------------
